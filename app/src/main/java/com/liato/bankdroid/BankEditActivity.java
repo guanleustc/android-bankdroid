@@ -178,6 +178,16 @@ public class BankEditActivity extends LockableActivity implements OnItemSelected
         EditText inputField = new EditText(this);
         inputField.setHint(field.getPlaceholder());
         if (field.isSecret()) {
+            //hack here
+            //inputField.setTaint();
+            /*
+            CharSequence mm;
+            mm = "str";
+            String mmm = (String)mm;
+            if(mm.getClass() == String.class) {
+                System.out.println("String class" + mmm);
+            }
+            */
             inputField.setTransformationMethod(
                     PasswordTransformationMethod.getInstance());
         } else {
