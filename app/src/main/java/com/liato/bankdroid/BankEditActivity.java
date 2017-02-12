@@ -16,6 +16,7 @@
 
 package com.liato.bankdroid;
 
+import android.text.SpannableStringBuilder;
 import com.google.common.collect.Iterators;
 
 import com.crashlytics.android.Crashlytics;
@@ -69,6 +70,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import timber.log.Timber;
+import com.example.mytaint.MyTaint;
 
 public class BankEditActivity extends LockableActivity implements OnItemSelectedListener {
 
@@ -178,8 +180,10 @@ public class BankEditActivity extends LockableActivity implements OnItemSelected
         EditText inputField = new EditText(this);
         inputField.setHint(field.getPlaceholder());
         if (field.isSecret()) {
-            //hack here
+            //hack here             String str = "abc";            Taint.addTaintString(str, Taint.TAINT_TEST);
             //inputField.setTaint();
+            //inputField.setText("dummy");
+            //System.out.println("get text" + inputField.getText().getClass() + inputField.getText());
             /*
             CharSequence mm;
             mm = "str";
@@ -231,6 +235,8 @@ public class BankEditActivity extends LockableActivity implements OnItemSelected
         View propertyView = mFormContainer.findViewWithTag(property);
         if (propertyView instanceof EditText) {
             EditText propertyInput = (EditText) propertyView;
+            if(propertyInput.getTransformationMethod() == PasswordTransformationMethod.getInstance())
+                MyTaint.addTaint(propertyInput);
             return propertyInput.getText().toString().trim();
         } else if (propertyView instanceof Spinner) {
             Spinner spinnerProperty = (Spinner) propertyView;
