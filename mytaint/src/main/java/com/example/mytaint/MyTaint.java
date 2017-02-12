@@ -1,6 +1,8 @@
 package com.example.mytaint;
 
 
+import android.support.v7.widget.AppCompatTextView;
+import android.support.v7.widget.AppCompatEditText;
 import android.text.SpannableStringBuilder;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -11,7 +13,7 @@ public class MyTaint {
     private static final String TAG = "MyTaint";
 
     //final static int taintTag = 0;
-    final int taintTag = Taint.TAINT_TEST;
+    final static int taintTag = Taint.TAINT_TEST;
 
 
     static private void addTaintSpannableStringBuilder(SpannableStringBuilder sp){
@@ -25,30 +27,21 @@ public class MyTaint {
     }
     static public void addTaint(Object obj){
         //Taint.addTaintChar('a', Taint.TAINT_TEST);
-        if(obj.getClass() == SpannableStringBuilder.class) {
+        Class clz = obj.getClass();
+        if(clz == SpannableStringBuilder.class) {
             SpannableStringBuilder sp = (SpannableStringBuilder) obj;
             addTaintSpannableStringBuilder(sp);
-        }else if (obj.getClass() == String.class){
-            //Taint.addTaintString((String)obj, taintTag);
+        }else if (clz == String.class){
+            Taint.addTaintString((String)obj, taintTag);
             System.out.println("tainting String");
             Log.v(TAG, "tainting String");
-        }else if (obj.getClass() == EditText.class){
-            EditText et = (EditText)obj;
+        }else if (clz == EditText.class || clz == TextView.class || clz == AppCompatEditText.class || clz == AppCompatTextView.class){
+            TextView et = (TextView)obj; //base class
             if(et.getText().getClass() == SpannableStringBuilder.class)
                 addTaintSpannableStringBuilder((SpannableStringBuilder)et.getText());
             else{
-                System.out.println("tainting unknow getText" + et.getClass() );
-                Log.v(TAG, "tainting unknow getText" + et.getClass() );
-            }
-            System.out.println("tainting EditText");
-            Log.v(TAG, "tainting EditText");
-        }else if (obj.getClass() == TextView.class){
-            TextView et = (TextView)obj;
-            if(et.getText().getClass() == SpannableStringBuilder.class)
-                addTaintSpannableStringBuilder((SpannableStringBuilder)et.getText());
-            else{
-                System.out.println("tainting unknow getText" + et.getClass() );
-                Log.v(TAG, "tainting unknow getText" + et.getClass() );
+                System.out.println("tainting unknown TextView.getText" + et.getClass() );
+                Log.v(TAG, "tainting unknown TextView.getText" + et.getClass() );
             }
             System.out.println("tainting TextView");
             Log.v(TAG, "tainting TextView");

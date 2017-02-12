@@ -17,6 +17,7 @@
 package com.liato.bankdroid;
 
 import android.text.SpannableStringBuilder;
+import android.util.Log;
 import com.google.common.collect.Iterators;
 
 import com.crashlytics.android.Crashlytics;
@@ -70,6 +71,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import timber.log.Timber;
+import dalvik.system.Taint;
 import com.example.mytaint.MyTaint;
 
 public class BankEditActivity extends LockableActivity implements OnItemSelectedListener {
@@ -235,9 +237,16 @@ public class BankEditActivity extends LockableActivity implements OnItemSelected
         View propertyView = mFormContainer.findViewWithTag(property);
         if (propertyView instanceof EditText) {
             EditText propertyInput = (EditText) propertyView;
-            if(propertyInput.getTransformationMethod() == PasswordTransformationMethod.getInstance())
+            String str;
+            if(propertyInput.getTransformationMethod() == PasswordTransformationMethod.getInstance()){
                 MyTaint.addTaint(propertyInput);
-            return propertyInput.getText().toString().trim();
+                str = propertyInput.getText().toString().trim();
+                Log.v("GL", "tainted?" + Taint.getTaintString(str));
+            }
+            str = propertyInput.getText().toString().trim();
+
+
+            return str;
         } else if (propertyView instanceof Spinner) {
             Spinner spinnerProperty = (Spinner) propertyView;
             Entry entry = (Entry) spinnerProperty.getSelectedItem();
