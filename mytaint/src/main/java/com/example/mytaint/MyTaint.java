@@ -50,8 +50,8 @@ public class MyTaint {
                 System.out.println("tainting unknow getText" + et.getClass() );
                 Log.v(TAG, "tainting unknow getText" + et.getClass() );
             }
-            System.out.println("tainting EditText");
-            Log.v(TAG, "tainting EditText");
+            System.out.println("tainting TextView");
+            Log.v(TAG, "tainting TextView");
         }else {
             System.out.println("tainting unknow class" + obj.getClass());
             Log.v(TAG, "tainting unknow class" + obj.getClass());
